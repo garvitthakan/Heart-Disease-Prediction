@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+</head>
+<body>
+    <h1>Heart Disease Prediction</h1>
+    <form id="predictionForm">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+
+        <label for="sex">Sex:</label>
+        <select id="sex" name="sex" required>
+            <option value="0">Female</option>
+            <option value="1">Male</option>
+        </select><br><br>
+
+        <label for="cp">Chest Pain Type (cp):</label>
+        <input type="number" id="cp" name="cp" required><br><br>
+
+        <label for="trestbps">Resting Blood Pressure (trestbps):</label>
+        <input type="number" id="trestbps" name="trestbps" required><br><br>
+
+        <label for="chol">Serum Cholesterol (chol):</label>
+        <input type="number" id="chol" name="chol" required><br><br>
+
+        <label for="fbs">Fasting Blood Sugar (fbs):</label>
+        <input type="number" id="fbs" name="fbs" required><br><br>
+
+        <label for="restecg">Resting Electrocardiographic Results (restecg):</label>
+        <input type="number" id="restecg" name="restecg" required><br><br>
+
+        <label for="thalach">Maximum Heart Rate Achieved (thalach):</label>
+        <input type="number" id="thalach" name="thalach" required><br><br>
+
+        <label for="exang">Exercise Induced Angina (exang):</label>
+        <input type="number" id="exang" name="exang" required><br><br>
+
+        <label for="oldpeak">ST Depression Induced by Exercise Relative to Rest (oldpeak):</label>
+        <input type="number" id="oldpeak" name="oldpeak" required><br><br>
+
+        <label for="slope">Slope of the Peak Exercise ST Segment (slope):</label>
+        <input type="number" id="slope" name="slope" required><br><br>
+
+        <label for="ca">Number of Major Vessels (0-3) Colored by Flourosopy (ca):</label>
+        <input type="number" id="ca" name="ca" required><br><br>
+
+        <label for="thal">Thalassemia (thal):</label>
+        <input type="number" id="thal" name="thal" required><br><br>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    <div id="predictionResult"></div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+    
+            const formData = new FormData(this);
+            const data = Array.from(formData.values()).map(value => parseInt(value));
+    
+            const response = await fetch('/predict/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+    
+            const result = await response.json();
+    
+            document.getElementById('predictionResult').innerText = result.prediction;
+        });
+    </script>
+</body>
+</html>
